@@ -14,3 +14,9 @@ nano config.js
 npm i
 npm start
 ```
+
+If you don't have a aria2c rpc server already running
+```bash
+nano startaria2c.sh
+sh startaria2c
+```
