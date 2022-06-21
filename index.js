@@ -35,9 +35,11 @@ const sendMessage = async (text) => {
   })}`)
   console.log('sendMessage Status:', await res.status)
 }
+
 const checkTitleMatch = (title) => {
   for (const rule of rule_list) {
-    const out = rule.test(title)
+    const regex = rule
+    const out = regex.test(title)
     if (out) return out
   }
   return false
@@ -45,40 +47,33 @@ const checkTitleMatch = (title) => {
 
 const run = async () => {
   run_count++
-  console.log('####################', run_count, '####################')
 
   const feed = await parser.parseURL(feed_link)
   const { title, items } = feed
   const lastBuildDate = feed.lastBuildDate || feed.pubDate || feed.items[0].pubDate || ''
 
-  console.log(title)
-
   if (lastBuildDate === '') {
-    console.log('未检测到时间, 跳过时间检查')
+    console.log('time not detected, skip time check')
   } else {
     if (lastBuildDate === _lastBuildDate) {
-      console.log('时间未更新:', lastBuildDate)
       return
     }
     _lastBuildDate = lastBuildDate
-    console.log('时间已更新:', _lastBuildDate, '->', lastBuildDate)
   }
 
   for (const item of items) {
     const { title } = item
     const link = (item.enclosure && item.enclosure.url) || item.link || ''
-
     if (link === '') {
-      console.log('未检测到下载链接, 跳过')
+      console.log('no download links detected, rss feed inaccessible')
       return
     }
     if (!first_dl_enable && run_count === 1) {
       downloaded_list.push(link)
-    } else {
+      } else {
       !downloaded_list.includes(link) && checkTitleMatch(title) && downloaded_list.push(link) && (() => {
         console.log('↓:', title)
         sendToAria2(link)
-        sendMessage(`Aria2\n<a href="${link}">${title}</a>`)
       })()
     }
   }
@@ -86,7 +81,7 @@ const run = async () => {
 
 (async () => {
   if (!feed_link || !aria2_config) {
-    console.log('配置缺失')
+    console.log('missing configuration')
     return
   }
   try {

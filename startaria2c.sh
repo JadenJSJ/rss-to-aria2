@@ -1,0 +1,1 @@
+aria2c -x 16 -j 20 -s 20 --enable-rpc --rpc-listen-all --listen-port=6101 --save-session="/path/session.txt" --bt-external-ip=portforwardingipfortorrent -d "downloadpath" --force-save=true --input-file /path/session.txt --save-session-interval 1800 --check-integrity false
