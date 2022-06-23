@@ -23,7 +23,7 @@ let _lastBuildDate
 const sendToAria2 = async (uri) => {
   const options = aria2_dl_dir ? { dir: aria2_dl_dir } : {}
   const [guid] = await new Aria2(aria2_config).call('addUri', [uri], options)
-  console.log('guid:', guid, 'uri:', uri)
+  // console.log('guid:', guid, 'uri:', uri)
 }
 
 const sendMessage = async (text) => {
@@ -73,7 +73,7 @@ const run = async () => {
       downloaded_list.push(link)
       } else {
       !downloaded_list.includes(link) && checkTitleMatch(title) && downloaded_list.push(link) && (() => {
-        console.log('↓ ', title)
+        console.log('↓', title)
         sendToAria2(link)
       })()
     }
