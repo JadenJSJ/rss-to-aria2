@@ -39,7 +39,7 @@ const sendMessage = async (text) => {
   console.log('sendMessage Status:', await res.status)
 }
 
-function sendDiscordWebhook(title, link, size) {
+function sendDiscordWebhook(title, link) {
   const embed = new webhook.MessageBuilder()
         .setName("Anime Downloader")
         .setTitle('↓ ' + title)
@@ -88,10 +88,9 @@ const run = async () => {
       downloaded_list.push(link)
       } else {
       !downloaded_list.includes(link) && checkTitleMatch(title) && downloaded_list.push(link) && (() => {
-        console.log('↓ ', title)
-        // // sendToAria2(link)
-        size = item.size
-        sendDiscordWebhook(title, link, size)
+        console.log('↓', title)
+        sendToAria2(link)
+        sendDiscordWebhook(title, link)
       })()
     }
   }
