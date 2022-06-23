@@ -1,6 +1,7 @@
 const Aria2 = require('aria2')
 const Parser = require('rss-parser')
 const fetch = require('node-fetch')
+const webhook = require("webhook-discord")
 const config = require('./config')
 
 const parser = new Parser()
@@ -25,6 +26,7 @@ const sendToAria2 = async (uri) => {
   const [guid] = await new Aria2(aria2_config).call('addUri', [uri], options)
   console.log('guid:', guid, 'uri:', uri)
 }
+
 const sendMessage = async (text) => {
   if (!tg_token && !tg_chat_id) return
   const res = await fetch(`https://api.telegram.org/bot${tg_token}/sendMessage?${new URLSearchParams({
@@ -34,6 +36,23 @@ const sendMessage = async (text) => {
     disable_web_page_preview: true,
   })}`)
   console.log('sendMessage Status:', await res.status)
+}
+
+const sendDiscordWebhook = (title, link, size) => {
+  if (size === undefined) {
+    size = "Unknown"
+  }
+  const hook = new webhook.Webhook("https://discord.com/api/webhooks/988105633960189952/199JHTbumYbJx4RA03BkMmNgjdZUFkfIMSRC_sg1MGs6bQGdz0E43cevSkXstxZa7rvr")
+  const embed = new webhook.MessageBuilder()
+        .setTitle('↓ ' + title)
+        .setAuthor('Anime Downloader', 'https://cdn.discordapp.com/icons/572277588102348800/dcab0212f4f760a2e8b474e1ceead822.png?size=4096')
+        .setDescription("**" + title.substring(13, title.length - 23) + "** is out <@572277409395638274>")
+        .addField('Link', link, true)
+        .addField('File Size', size, true)
+        .setColor('#58b9ff')
+        .setFooter('Added By System', 'https://cdn.discordapp.com/avatars/572277409395638274/478518e76f40efc42ec8140640d13670.png?size=4096')
+        // .setTimestamp();
+        hook.send(embed);
 }
 
 const checkTitleMatch = (title) => {
@@ -72,8 +91,9 @@ const run = async () => {
       downloaded_list.push(link)
       } else {
       !downloaded_list.includes(link) && checkTitleMatch(title) && downloaded_list.push(link) && (() => {
-        console.log('↓:', title)
-        sendToAria2(link)
+        console.log('↓ ', title)
+        // sendToAria2(link)
+        sendDiscordWebhook(title, link, item.size)
       })()
     }
   }
