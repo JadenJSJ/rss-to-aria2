@@ -48,7 +48,7 @@ function sendDiscordWebhook(title, link) {
         .addField('Torrent Link', link, true)
         .setColor('#58b9ff')
         .setFooter('Added By System', 'https://cdn.discordapp.com/avatars/572277409395638274/478518e76f40efc42ec8140640d13670.png?size=4096')
-        // .setTimestamp();
+        .setTime();
   hook.send(embed);
 }
 
