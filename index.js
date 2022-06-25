@@ -92,3 +92,7 @@ const run = async () => {
     console.error(e)
   }
 })()
+
+process.on('uncaughtException', function (err) {
+  console.log("✘ RSS Feed is Inaccessible");
+});
