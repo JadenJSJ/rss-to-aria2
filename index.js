@@ -39,9 +39,12 @@ const sendMessage = async (text) => {
   console.log('sendMessage Status:', await res.status)
 }
 
+// https://joe.is-a.dev/webhook-discord/MessageBuilder.html
+
 function sendDiscordWebhook(title, link) {
   const embed = new webhook.MessageBuilder()
         .setName("Anime Downloader")
+        .setAvatar('https://cdn.discordapp.com/icons/572277588102348800/dcab0212f4f760a2e8b474e1ceead822.png?size=4096')
         .setTitle('↓ ' + title)
         .setAuthor('Anime Downloader', 'https://cdn.discordapp.com/icons/572277588102348800/dcab0212f4f760a2e8b474e1ceead822.png?size=4096')
         .setDescription("**" + title.substring(13, title.length - 23) + "** is out <@572277409395638274>!\nDownload started.")
