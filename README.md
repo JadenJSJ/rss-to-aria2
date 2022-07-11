@@ -1,4 +1,6 @@
-# RSS to Aria2
+## Work In Progress
+
+<!-- # RSS to Aria2
 This script will continiously check the rss feed that you provide on config
 and check for matches on your regex, and download them if they match.
 
@@ -19,4 +21,4 @@ If you don't have a aria2c rpc server already running
 ```bash
 nano startaria2c.sh
 sh startaria2c
-```
+``` -->
